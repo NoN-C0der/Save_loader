@@ -1,6 +1,15 @@
 SaveLoader = SaveLoader or {}
 
+local function logDebug(message)
+  if not SaveLoader.Config or not SaveLoader.Config.Debug then
+    return
+  end
+
+  MsgC(Color(90, 200, 255), "[Save Loader] ", color_white, tostring(message) .. "\n")
+end
+
 local function requestList()
+  logDebug("Requesting save list from server.")
   net.Start("SaveLoader.RequestList")
   net.SendToServer()
 end
@@ -44,6 +53,7 @@ local function buildMenu(saveList)
       return
     end
 
+    logDebug("Requesting load for " .. selected)
     net.Start("SaveLoader.LoadSave")
     net.WriteString(selected)
     net.SendToServer()
@@ -51,10 +61,12 @@ local function buildMenu(saveList)
 end
 
 net.Receive("SaveLoader.OpenMenu", function()
+  logDebug("Menu open received.")
   requestList()
 end)
 
 net.Receive("SaveLoader.SendList", function()
   local saves = net.ReadTable() or {}
+  logDebug("Received save list with " .. tostring(#saves) .. " entries.")
   buildMenu(saves)
 end)

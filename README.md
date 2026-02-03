@@ -17,5 +17,8 @@ Garry's Mod save loader for dedicated servers with a GUI menu and ULX integratio
 - The addon loads `.gms` files from `garrysmod/saves` on the server.
 
 ## Notes
-- The addon issues the `load <save>` console command on the server.
+- The addon issues `gm_load <save>` when available, otherwise it falls back to `load <save>`.
 - Make sure your saves are compatible with the current map.
+
+## Debugging
+- Set `SaveLoader.Config.Debug = true` in `lua/save_loader/sh_config.lua` to log each addon action.
